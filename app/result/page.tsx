@@ -142,6 +142,9 @@ function ResultContent() {
           >
             🔄 다시 테스트하기
           </button>
+
+          {/* 카카오 애드핏 광고 (하단) */}
+          <KakaoAd />
         </div>
       </div>
     </main>
