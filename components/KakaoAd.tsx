@@ -8,14 +8,6 @@ interface KakaoAdProps {
   className?: string
 }
 
-declare global {
-  interface Window {
-    kakaoAdFit?: {
-      display: () => void
-    }
-  }
-}
-
 export default function KakaoAd({ 
   width = '300', 
   height = '250',
@@ -24,28 +16,37 @@ export default function KakaoAd({
   const adRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // 카카오 애드핏 스크립트가 로드될 때까지 대기
-    const checkAdFit = () => {
-      if (window.kakaoAdFit && adRef.current) {
-        window.kakaoAdFit.display()
-      } else {
-        // 아직 스크립트가 로드되지 않았으면 조금 후에 다시 시도
-        setTimeout(checkAdFit, 100)
+    // 카카오 애드핏은 스크립트가 로드되면 자동으로 모든 ins.kakao_ad_area 요소를 찾아서 광고를 표시합니다
+    // 수동으로 display()를 호출할 필요가 없습니다
+    
+    // 스크립트 로드 확인 및 광고 표시 재시도
+    const checkAndDisplay = () => {
+      // 카카오 애드핏 스크립트가 로드되었는지 확인
+      const scriptLoaded = document.querySelector('script[src*="ba.min.js"]')
+      
+      if (scriptLoaded && adRef.current) {
+        // 스크립트가 로드되었고 광고 요소가 있으면 카카오 애드핏이 자동으로 처리합니다
+        // window.kakaoAdFit이 있으면 호출 (있을 경우에만)
+        if (typeof window !== 'undefined' && (window as any).kakaoAdFit && typeof (window as any).kakaoAdFit.display === 'function') {
+          try {
+            (window as any).kakaoAdFit.display()
+          } catch (e) {
+            // display()가 없거나 에러가 발생하면 무시 (자동으로 처리됨)
+            console.log('카카오 애드핏 자동 표시 대기 중')
+          }
+        }
       }
     }
 
-    // 즉시 한 번 확인하고, 계속 체크
+    // DOM이 준비되면 확인
     const timer = setInterval(() => {
-      if (window.kakaoAdFit) {
-        window.kakaoAdFit.display()
-        clearInterval(timer)
-      }
-    }, 100)
+      checkAndDisplay()
+    }, 500)
 
-    // 최대 5초 대기
+    // 최대 10초 후 정리
     setTimeout(() => {
       clearInterval(timer)
-    }, 5000)
+    }, 10000)
 
     return () => {
       clearInterval(timer)

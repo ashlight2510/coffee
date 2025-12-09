@@ -1,11 +1,11 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import coffeeData from '@/data/coffee.json'
 import KakaoAd from '@/components/KakaoAd'
 
-export default function ResultPage() {
+function ResultContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const scoreParam = searchParams.get('score')
@@ -145,6 +145,21 @@ export default function ResultPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function ResultPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="text-4xl mb-4">☕</div>
+          <p className="text-gray-600">결과를 불러오는 중...</p>
+        </div>
+      </main>
+    }>
+      <ResultContent />
+    </Suspense>
   )
 }
 
