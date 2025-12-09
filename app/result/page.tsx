@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import coffeeData from '@/data/coffee.json'
+import KakaoAd from '@/components/KakaoAd'
 
 export default function ResultPage() {
   const router = useRouter()
@@ -114,6 +115,9 @@ export default function ResultPage() {
           <div className="bg-gray-50 rounded-2xl p-6 text-lg text-gray-700 leading-relaxed">
             {resultMessage}
           </div>
+
+          {/* 카카오 애드핏 광고 */}
+          <KakaoAd />
 
           {/* 공유 버튼 */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">

@@ -3,6 +3,7 @@
 import { useRouter, useParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import coffeeData from '@/data/coffee.json'
+import KakaoAd from '@/components/KakaoAd'
 
 export default function QuestionPage() {
   const router = useRouter()
@@ -106,6 +107,9 @@ export default function QuestionPage() {
           >
             {questionIndex < coffeeData.questions.length - 1 ? '다음 질문 ➡️' : '결과 보기 ✨'}
           </button>
+
+          {/* 카카오 애드핏 광고 */}
+          <KakaoAd />
         </div>
       </div>
     </main>
