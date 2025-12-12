@@ -5,6 +5,8 @@ import { useState, useEffect, Suspense } from 'react'
 import coffeeData from '@/data/coffee.json'
 import KakaoAd from '@/components/KakaoAd'
 
+const OTHER_TEST_URL = 'https://funnyfunny.cloud';
+
 function ResultContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -20,6 +22,7 @@ function ResultContent() {
       router.push('/')
     }
   }, [scoreParam, parsedScore, router])
+
 
   if (!scoreParam || isNaN(parsedScore)) {
     return null
@@ -73,24 +76,26 @@ function ResultContent() {
   }
 
   // 카카오톡 공유하기 (OG 태그 활용)
-  const handleKakaoShare = () => {
-    if (typeof window !== 'undefined' && (window as any).Kakao) {
-      (window as any).Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: coffeeData.title,
-          description: resultMessage,
-          imageUrl: `${window.location.origin}${coffeeData.shareImage}`,
-          link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
-          },
-        },
-      })
-    } else {
-      // 카카오 SDK 없을 경우 일반 공유
-      handleShare()
+  // 카카오톡 공유하기 대신 기본 공유로 처리 (SDK 미사용)
+  const handleKakaoShare = async () => {
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
+    const shareData = {
+      title: coffeeData.title,
+      text: resultMessage,
+      url: shareUrl,
     }
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData)
+        return
+      } catch (error) {
+        console.error('웹 공유 실패', error)
+      }
+    }
+
+    // Web Share API 미지원 시 링크 복사
+    handleShare()
   }
 
   return (
@@ -133,6 +138,14 @@ function ResultContent() {
             >
               💬 카카오톡 공유
             </button>
+            <a
+              href={OTHER_TEST_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-4 bg-white border border-coffee-200 text-coffee-800 font-bold rounded-xl shadow hover:shadow-lg transition-all transform hover:scale-105 text-center"
+            >
+              🎯 다른 테스트 해보기
+            </a>
           </div>
 
           {/* 다시 테스트하기 버튼 */}
@@ -165,4 +178,3 @@ export default function ResultPage() {
     </Suspense>
   )
 }
-

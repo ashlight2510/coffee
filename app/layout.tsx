@@ -8,10 +8,22 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: '커피 중독도 테스트',
   description: '하루 카페인으로 몇 번이나 부활하시나요?',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
   openGraph: {
     title: '커피 중독도 테스트',
     description: '당신의 일상 속 커피 의존도를 재미있게 분석하는 테스트입니다.',
-    images: ['/default-og.png'],
+    images: [
+      {
+        url: '/default-og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Coffee Addiction Test preview',
+      },
+    ],
   },
 }
 
@@ -32,4 +44,3 @@ export default function RootLayout({
     </html>
   )
 }
-
