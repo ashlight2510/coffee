@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect, Suspense } from 'react'
 import coffeeData from '@/data/coffee.json'
-import KakaoAd from '@/components/KakaoAd'
 
 const OTHER_TEST_URL = 'https://funnyfunny.cloud';
 
@@ -121,8 +120,6 @@ function ResultContent() {
             {resultMessage}
           </div>
 
-          {/* 카카오 애드핏 광고 */}
-          <KakaoAd />
 
           {/* 공유 버튼 */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -156,8 +153,6 @@ function ResultContent() {
             🔄 다시 테스트하기
           </button>
 
-          {/* 카카오 애드핏 광고 (하단) */}
-          <KakaoAd />
         </div>
       </div>
     </main>

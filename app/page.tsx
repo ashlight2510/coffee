@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import coffeeData from '@/data/coffee.json'
-import KakaoAd from '@/components/KakaoAd'
 
 export default function Home() {
   return (
@@ -24,11 +23,8 @@ export default function Home() {
             테스트 시작하기 🚀
           </Link>
 
-          {/* 카카오 애드핏 광고 */}
-          <KakaoAd />
         </div>
       </div>
     </main>
   )
 }
-
